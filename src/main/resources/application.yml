@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: skillpath-api
+
+  # Default datastore is an in-memory H2 instance so the app runs with zero setup.
+  # Switch to MySQL or PostgreSQL with: --spring.profiles.active=mysql | postgres
+  datasource:
+    url: jdbc:h2:mem:skillpath;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jackson:
+    default-property-inclusion: non_null
+
+  mvc:
+    problemdetails:
+      enabled: false
+
+logging:
+  level:
+    com.skillpath: INFO
+    org.hibernate.SQL: WARN
