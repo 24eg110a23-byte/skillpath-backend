@@ -27,10 +27,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("""
             select distinct c from Course c
             where (:status is null or c.status = :status)
-              and (:search is null
-                   or lower(c.title) like lower(concat('%', :search, '%'))
-                   or lower(c.provider) like lower(concat('%', :search, '%'))
-                   or lower(coalesce(c.description, '')) like lower(concat('%', :search, '%')))
+              and (cast(:search as string) is null
+                   or lower(c.title) like lower(concat('%', cast(:search as string), '%'))
+                   or lower(c.provider) like lower(concat('%', cast(:search as string), '%'))
+                   or lower(coalesce(c.description, '')) like lower(concat('%', cast(:search as string), '%')))
             """)
     Page<Course> search(
             @Param("search") String search,

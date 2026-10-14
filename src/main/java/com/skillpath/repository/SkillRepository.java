@@ -23,11 +23,12 @@ public interface SkillRepository extends JpaRepository<Skill, Long> {
 
     @Query("""
             select distinct s from Skill s
-            where (:category is null or lower(s.category) = lower(:category))
-              and (:search is null
-                   or lower(s.name) like lower(concat('%', :search, '%'))
-                   or lower(s.category) like lower(concat('%', :search, '%'))
-                   or lower(coalesce(s.description, '')) like lower(concat('%', :search, '%')))
+            where (cast(:category as string) is null
+                   or lower(s.category) = lower(cast(:category as string)))
+              and (cast(:search as string) is null
+                   or lower(s.name) like lower(concat('%', cast(:search as string), '%'))
+                   or lower(s.category) like lower(concat('%', cast(:search as string), '%'))
+                   or lower(coalesce(s.description, '')) like lower(concat('%', cast(:search as string), '%')))
             """)
     Page<Skill> search(
             @Param("search") String search,
